@@ -1,5 +1,7 @@
-from sqlmodel import Field , SQLModel
+from sqlmodel import Field, SQLModel
 
+
+# This table stores the answers submitted through index.html.
 class Users(SQLModel, table=True):
     id: int | None = Field(default=None, primary_key=True)
     user: str
@@ -13,7 +15,22 @@ class Users(SQLModel, table=True):
     hunts_done: int
     Ruger_Aidal_Kill_Confirm: str
 
-class user(SQLModel, table=True):
+
+# This separate table stores login accounts.
+# The password_hash field contains a hashed password, never the original password.
+class Account(SQLModel, table=True):
     id: int | None = Field(default=None, primary_key=True)
-    name: str
-    user: str
+    username: str = Field(index=True, unique=True)
+    password_hash: str
+
+
+# These models describe the data received from the HTML pages.
+# They are not database tables.
+class RegisterRequest(SQLModel):
+    username: str
+    password: str
+
+
+class LoginRequest(SQLModel):
+    username: str
+    password: str

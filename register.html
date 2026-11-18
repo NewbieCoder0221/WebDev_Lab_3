@@ -1,24 +1,61 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Sign Up</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <main class="container form-box">
+        <p class="eyebrow">JOIN THE HUNT</p>
+        <h1>Register Account</h1>
+        <form id="registerForm">
+            <label for="username">Username</label>
+            <input type="text" id="username" placeholder="Choose a username" required>
 
-<div class="container">
+            <label for="password">Password</label>
+            <input type="password" id="password" placeholder="At least 6 characters" minlength="6" required>
 
-    <h1>Register Account</h1>
+            <button type="submit">Create Account</button>
+        </form>
+        <p id="message" class="message" aria-live="polite"></p>
+        <p class="small-text">Already have an account? <a href="Login.html">Login here</a>.</p>
+        <a href="mainpage.html">Back to Mainpage</a>
+    </main>
 
-    <input type="text" placeholder="Usename"><br>
-    <input type="password" placeholder="Password"><br>
-    <button onclick="register()">Register Account</button>
+    <script>
+        const registerForm = document.getElementById("registerForm");
+        const message = document.getElementById("message");
 
-    <br><br>
+        registerForm.addEventListener("submit", async function (event) {
+            event.preventDefault();
 
-    <a href="mainpage.html">Back to Login</a>
+            const postData = {
+                username: document.getElementById("username").value,
+                password: document.getElementById("password").value
+            };
 
-</div>
+            try {
+                const response = await fetch("http://127.0.0.1:8000/register", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(postData)
+                });
+                const result = await response.json();
 
+                if (!response.ok) {
+                    throw new Error(result.detail || "Registration failed.");
+                }
+
+                message.textContent = "Account created! You can now log in.";
+                message.className = "message success";
+                registerForm.reset();
+            } catch (error) {
+                message.textContent = error.message + " Make sure the backend is running.";
+                message.className = "message error";
+            }
+        });
+    </script>
 </body>
 </html>
