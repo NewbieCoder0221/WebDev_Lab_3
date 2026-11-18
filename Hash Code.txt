@@ -1,0 +1,10 @@
+Passwords should not be stored in plaintext.
+import hashlib
+pwd = 'secure password'
+hashed = hashlib.sha256(pwd.encode().hexdigest())
+print(hashed.hexdigest())
+#c0b4c6be95c976bea97cb21c18771e09a6446b5b68a393b38d4774d755370fe
+3 checking of password
+Inpute_password =input()
+Input_hashed = hashlib.sha256(Input_password.encode()).hexdigest()if( hashed == Input_bashed):
+print("login success")
